@@ -1,0 +1,17 @@
+- name: install OS package prerequisites
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3
+    - git
+
+- name: install Python prereqisites
+  pip:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - click
+    - web3
+    - eth-testrpc
+

@@ -1,0 +1,5 @@
+- name: install prerequisites
+  include_tasks: prerequisites.yml
+
+#- name: install ckan2blockchain
+#  include_tasks: install_from_github.yml
