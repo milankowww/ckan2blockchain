@@ -16,4 +16,4 @@
     - click
     - web3
     - eth-testrpc
-
+	- eth_tester
