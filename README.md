@@ -4,6 +4,9 @@
 ## Installation
 Installation is very simple. You could either install the project files using Ansible or manaully by following the provided instructions.
 
+### Install from pip
+Installation from pip will be available soon.
+
 ### Manual installation
 Install all the OS level and Python level prerequisites. On Debian or Ubuntu based systems, this means running the following commands:
 ```sh

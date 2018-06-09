@@ -1,3 +1,6 @@
 ckan2blockchain.egg-info
 build
 dist
+playground
+*~
+.*.sw?
