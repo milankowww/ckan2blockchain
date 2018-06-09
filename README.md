@@ -1,5 +1,5 @@
 # ckan2blockchain
-`ckan2blockchain` is an app for pushing the CKAN dataset hashes to Ethereum blockchain. The motivation is to increase the perceived trustworthiness of the datasets by allowing to verify their integrity over time.
+`ckan2blockchain` is an app for pushing the CKAN dataset hashes to Ethereum blockchain. The motivation is to increase the perceived trustworthiness of datasets by maintaining their integrity over time in the blockchain.
 
 ## Installation
 Installation is very simple. You could either install the project files using Ansible or manaully by following the provided instructions.
@@ -17,8 +17,11 @@ pip3 install click web3 eth-testrpc
 ### Install through Ansible
 When installing the server, add the role from [ansible_roles/ckan2blockchain](ansible_roles/ckan2blockchain) to the list of roles. It will install the prerequisites automatically.
 
+<!--
 ## Usage
+
 TODO
+-->
 
 ## Contributing
 This a free and open-source project. We welcome all kinds of contributions. If you would like to contribute, please send us a pull request.
