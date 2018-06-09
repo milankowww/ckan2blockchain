@@ -6,6 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="ckan2blockchain",
     version="1.0.0",
+
     author="Milan Pikula, Lukas Balazik",
     author_email="milan.pikula@nases.gov.sk",
     description="Push CKAN dataset hashes to Ethereum blockchain",
@@ -18,4 +19,11 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ),
+    entry_points={
+        'console_scripts': [
+            'ckan2blockchain = ckan2blockchain.main:main'
+        ],
+    },
 )
+
+# vim: ai ts=4 sts=4 et sw=4 ft=python
