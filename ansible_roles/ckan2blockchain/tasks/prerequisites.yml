@@ -10,6 +10,8 @@
   pip:
     name: "{{ item }}"
     state: present
+    # this must be present on MacOS with HomeBrew because auto detection from python_interpreter does not work.
+    # executable: pip3
   with_items:
     - click
     - web3
