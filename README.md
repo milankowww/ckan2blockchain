@@ -11,7 +11,7 @@ Installation from pip will be available soon.
 Install all the OS level and Python level prerequisites. On Debian or Ubuntu based systems, this means running the following commands:
 ```sh
 apt-get install install python3 python3-pip
-pip3 install click web3 eth-testrpc
+pip3 install click web3 eth-testrpc eth-tester
 ```
 
 ### Install through Ansible
@@ -26,6 +26,8 @@ Create or edit the configuration file `/etc/ckan2blockchain.ini` and configure t
 
 	[ckan]
 	url = https://www.data.gov.sk/
+	retries = 5
+	retry_delay = 10
 
 	[ethereum]
 	# provider - how to connect to Ethereum network. Valid values:
@@ -40,7 +42,7 @@ Create or edit the configuration file `/etc/ckan2blockchain.ini` and configure t
 	private_key_file = /home/myuser/.ethereum/keystore/KEYFILENAME
 
 	# target address where the hashes are being uploaded.
-	target_address = '0x26455A4440eE6A93d98C4A94d383419a54D9D1C6'
+	target_address = 0x26455A4440eE6A93d98C4A94d383419a54D9D1C6
 
 ## Usage
 
