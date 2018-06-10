@@ -4,3 +4,4 @@ dist
 playground
 *~
 .*.sw?
+**/__pycache__
