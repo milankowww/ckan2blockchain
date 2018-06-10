@@ -88,9 +88,13 @@ class Ckan2Blockchain:
         ini_defaults = {
             'general': {
                 'blockchain': 'ethereum'
-            }
+            },
+            'ethereum': {
+                'maximum_transaction_size': '65536'
+            },
         }
         self.ini_args = configparser.ConfigParser(defaults=ini_defaults)
+        self.ini_args.read_dict(ini_defaults)
 
         try:
             found = self.ini_args.read(self.cli_args.config_file)

@@ -44,6 +44,9 @@ Create or edit the configuration file `/etc/ckan2blockchain.ini` and configure t
 	# target address where the hashes are being uploaded.
 	target_address = 0x26455A4440eE6A93d98C4A94d383419a54D9D1C6
 
+	# how large transactions to commit to the network
+	maximum_transaction_size = 65536
+
 ## Usage
 
 Enter `ckan2blockchain --help` to see the general help. Use `ckan2blockchain <COMMAND> --help` to see the help for particular command.

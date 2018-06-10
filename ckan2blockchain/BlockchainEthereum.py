@@ -2,6 +2,7 @@ import argparse
 import getpass
 import hashlib, time
 import json
+import binascii
 
 import sys
 
@@ -48,9 +49,19 @@ class BlockchainEthereum:
             self.__load_private_key()
 
     def add_to_blockchain(self, dataset_hashes):
-        # FIXME: segmentation ; convert to binary
-        self.logger.info('Sending transaction to blockchain')
-        self.__send_data('0000')
+        dataset_ids = list(dataset_hashes.keys())
+        if len(dataset_ids) == 0:
+            return
+
+        header = str(binascii.hexlify(b"ckan2blockchain.1."), 'utf-8')
+        header_len = len(header)//2
+        entry_len = (len(dataset_ids[0]) + len(dataset_hashes[dataset_ids[0]]))//2
+        entries_per_tx = (self.ini_args.getint('ethereum', 'maximum_transaction_size') - header_len) // entry_len
+
+        for i in range(0, len(dataset_ids), entries_per_tx):
+            data = header + ''.join(x+dataset_hashes[x] for x in dataset_ids[i:i+entries_per_tx])
+            self.logger.info('Sending transaction to blockchain: '+data)
+            self.__send_data(data)
         
     # private methods
     def __ask_decrypt_password(self):
@@ -96,7 +107,7 @@ class BlockchainEthereum:
         account = Account.privateKeyToAccount(self.private_key)
 
         signed_transaction = self.w3.eth.account.signTransaction({
-            'nonce': self.w3.eth.getTransactionCount(account.address), # FIXME: add pending transactions
+            'nonce': self.w3.eth.getTransactionCount(account.address, 'pending'),
             'gasPrice': self.w3.eth.gasPrice,
             'gas': 900000, # should be auto-calculated
 
