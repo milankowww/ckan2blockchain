@@ -3,19 +3,17 @@
 import configparser
 import argparse
 import sys
+import logging, logging.handlers
 
 from BlockchainEthereum import BlockchainEthereum
 
 class Ckan2Blockchain:
 
     def __init__(self):
-        pass
-
-    def create_account(self, force=False):
-        pass
-
-    def setup_ethereum(self, args):
-        pass
+        self.logger = logging.getLogger('Ckan2Blockchain')
+        self.logger.setLevel(logging.INFO)
+        self.logger.addHandler(logging.handlers.SysLogHandler())
+        self.logger.info('started')
 
     def add_cli_commmands(self,subparsers):
         # dataset-store
@@ -31,6 +29,13 @@ class Ckan2Blockchain:
 
         # dataset-verify-all
         sub_dataset_verify_all = subparsers.add_parser('dataset-verify-all', help='verify hashes presently on the blockchain against CKAN')
+
+    def handle_command(self, command):
+        if command=='dataset-store':
+            # data = ...TODO...
+            # self.chain.add_to_blockchain(data)
+            self.chain.add_to_blockchain('a00aa00a')
+            pass
 
     def main(self):
 
@@ -63,12 +68,15 @@ class Ckan2Blockchain:
 
             tmp = self.ini_args.get('general','blockchain')
             if tmp == 'ethereum':
-                self.chain = BlockchainEthereum(self.cli_args, self.ini_args)
+                self.chain = BlockchainEthereum(self.cli_args, self.ini_args, self.logger)
             else:
                 raise(ValueError('Unsupported type of blockchain: '+tmp))
 
         except (ValueError,configparser.Error) as e:
             sys.exit("Configuration file error: "+str(e))
+
+        self.handle_command(self.cli_args.command)
+        self.chain.handle_command(self.cli_args.command)
 
 #        if args.blockchain == '--ethereum':
 #            self.chain = BlockchainEthereum(self.cli_args)

@@ -35,21 +35,37 @@ Create or edit the configuration file `/etc/ckan2blockchain.ini` and configure t
 	#  https://x.x.x.x/ - use a network node running on given address
 	provider = network
 
-	# how to obtain the private key. This may be a path to local geth keystore
+	# how to obtain the private key for the source address, from which
+	# the hashes are to be sent. This may be a path to local geth keystore
 	private_key_file = /home/myuser/.ethereum/keystore/KEYFILENAME
+
+	# target address where the hashes are being uploaded.
+	target_address = '0x26455A4440eE6A93d98C4A94d383419a54D9D1C6'
 
 ## Usage
 
 Enter `ckan2blockchain --help` to see the general help. Use `ckan2blockchain <COMMAND> --help` to see the help for particular command.
 
-<!--
 ### Examples
 
-TODO
--->
+```sh
+# 1. optional: create a new address FROM WHICH the data hashes are sent (if you don't have any already)
+ckan2blockchain eth-create-address
+
+# 2. fund the address, so that there is enough ETH to pay for the transactions
+
+# 3. upload all hashes to blockchain
+ckan2blockchain dataset-store-all
+```
+
+### See it in action
+
+ - [https://etherscan.io/address/0x26455A4440eE6A93d98C4A94d383419a54D9D1C6](etherscan.io page for data.gov.sk)
 
 ## Contributing
 This a free and open-source project. We welcome all kinds of contributions. If you would like to contribute, please send us a pull request.
+
+If you use our code to publish hashes of your datasets, please let us know. We could link to your address from our project page.
 
 ## License
 This project is licensed under the terms of [GNU GENERAL PUBLIC LICENSE, Version 3](LICENSE). Contact us if you suspect a breach of license terms.
