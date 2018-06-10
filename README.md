@@ -17,8 +17,33 @@ pip3 install click web3 eth-testrpc
 ### Install through Ansible
 When installing the server, add the role from [ansible_roles/ckan2blockchain](ansible_roles/ckan2blockchain) to the list of roles. It will install the prerequisites automatically.
 
-<!--
+## Configuration
+
+Create or edit the configuration file `/etc/ckan2blockchain.ini` and configure the required fields. Example ini file may look like this:
+
+	[general]
+	blockchain = ethereum
+
+	[ckan]
+	url = https://www.data.gov.sk/
+
+	[ethereum]
+	# provider - how to connect to Ethereum network. Valid values:
+	#  test - use fake connection for testing
+	#  local - use a locally running geth node. Safer, but more resource heavy.
+	#  network - use a network node to connect to Ethereum (infura.io)
+	#  https://x.x.x.x/ - use a network node running on given address
+	provider = network
+
+	# how to obtain the private key. This may be a path to local geth keystore
+	private_key_file = /home/myuser/.ethereum/keystore/KEYFILENAME
+
 ## Usage
+
+Enter `ckan2blockchain --help` to see the general help. Use `ckan2blockchain <COMMAND> --help` to see the help for particular command.
+
+<!--
+### Examples
 
 TODO
 -->
