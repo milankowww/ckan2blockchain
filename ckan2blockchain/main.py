@@ -11,8 +11,18 @@ class Ckan2Blockchain:
 
     def __init__(self):
         self.logger = logging.getLogger('Ckan2Blockchain')
+
         self.logger.setLevel(logging.INFO)
-        self.logger.addHandler(logging.handlers.SysLogHandler())
+        fmt = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+        out1 = logging.StreamHandler(sys.stderr)
+        out1.setFormatter(fmt)
+        self.logger.addHandler(out1)
+
+        out2 = logging.handlers.SysLogHandler()
+        out2.setFormatter(fmt)
+        self.logger.addHandler(out2)
+
         self.logger.info('started')
 
     def add_cli_commmands(self,subparsers):
