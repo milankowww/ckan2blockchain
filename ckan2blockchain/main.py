@@ -5,6 +5,8 @@ import argparse
 import sys
 import logging, logging.handlers
 
+from CkanCrawler import CkanCrawler
+
 from BlockchainEthereum import BlockchainEthereum
 
 class Ckan2Blockchain:
@@ -28,7 +30,7 @@ class Ckan2Blockchain:
     def add_cli_commmands(self,subparsers):
         # dataset-store
         sub_dataset_store = subparsers.add_parser('dataset-store', help='retrieve hash of selected dataset from CKAN and store it to the block chain')
-        sub_dataset_store.add_argument('-d', '--dataset', action='append', help='dataset identificator')
+        sub_dataset_store.add_argument('-d', '--dataset', action='append', help='dataset identificator').required = True
 
         # dataset-verify
         sub_dataset_verify = subparsers.add_parser('dataset-verify', help='retrieve hash of the dataset from the block chain and verify against CKAN')
@@ -41,11 +43,30 @@ class Ckan2Blockchain:
         sub_dataset_verify_all = subparsers.add_parser('dataset-verify-all', help='verify hashes presently on the blockchain against CKAN')
 
     def handle_command(self, command):
-        if command=='dataset-store':
-            # data = ...TODO...
-            # self.chain.add_to_blockchain(data)
-            self.chain.add_to_blockchain('a00aa00a')
-            pass
+      if command=='dataset-store-all' or command=='dataset-verify-all':
+          packages = self.ckan.get_package_list()
+          exit_on_fail = False
+      elif command=='dataset-store' or command=='dataset-verify':
+          packages = self.cli_args.dataset
+          exit_on_fail = True
+      else:
+        return
+
+      results = { }
+      for package in packages:
+          try:
+              (package_hash, dataset_hash) = self.ckan.hash_package(package)
+              results[package_hash] = dataset_hash
+          except Exception as e:
+              if exit_on_fail:
+                  sys.exit("Error while obtaining hash for "+package+" from CKAN: "+str(e))
+              else:
+                  self.logger.error("Error while obtaining hash for "+package+" from CKAN: "+str(e))
+
+      if command=='dataset-store' or command=='dataset-store-all':
+          self.chain.add_to_blockchain(results)
+      else:
+          pass # TODO - handle verification
 
     def main(self):
 
@@ -76,6 +97,8 @@ class Ckan2Blockchain:
             if len(found) == 0:
                 raise(ValueError('Cannot open the file '+self.cli_args.config_file))
 
+            self.ckan = CkanCrawler(self.cli_args, self.ini_args, self.logger)
+
             tmp = self.ini_args.get('general','blockchain')
             if tmp == 'ethereum':
                 self.chain = BlockchainEthereum(self.cli_args, self.ini_args, self.logger)
@@ -87,12 +110,6 @@ class Ckan2Blockchain:
 
         self.handle_command(self.cli_args.command)
         self.chain.handle_command(self.cli_args.command)
-
-#        if args.blockchain == '--ethereum':
-#            self.chain = BlockchainEthereum(self.cli_args)
-#
-#        if cli_args.create_account:
-#            self.create_account(cli_args.force)
 
 if __name__ == '__main__':
     app = Ckan2Blockchain()

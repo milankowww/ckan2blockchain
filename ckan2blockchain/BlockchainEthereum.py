@@ -50,7 +50,7 @@ class BlockchainEthereum:
     def add_to_blockchain(self, dataset_hashes):
         # FIXME: segmentation ; convert to binary
         self.logger.info('Sending transaction to blockchain')
-        self.__send_data(dataset_hashes)
+        self.__send_data('0000')
         
     # private methods
     def __ask_decrypt_password(self):
